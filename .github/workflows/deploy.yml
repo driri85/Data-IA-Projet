@@ -1,0 +1,58 @@
+name: Self-hosted CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Validate application syntax
+        shell: pwsh
+        run: python -m py_compile app.py
+
+      - name: Build Docker image
+        shell: pwsh
+        run: docker build -t data-ia-projet:latest .
+
+  deploy:
+    needs: build-and-test
+    runs-on: self-hosted
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        shell: pwsh
+        run: docker build -t data-ia-projet:latest .
+
+      - name: Stop previous container
+        shell: pwsh
+        run: |
+          docker rm -f data-ia-projet 2>$null
+
+      - name: Run application container
+        shell: pwsh
+        run: |
+          docker run -d --name data-ia-projet --restart unless-stopped -p 8501:8501 data-ia-projet:latest
