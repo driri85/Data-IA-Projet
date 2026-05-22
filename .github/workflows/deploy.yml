@@ -15,16 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r requirements.txt
-
-      - name: Validate application syntax
-        run: python3 -m py_compile app.py
-
       - name: Build Docker image
         run: docker build -t data-ia-projet:latest .
+
+      - name: Validate application syntax inside container
+        run: docker run --rm --entrypoint python data-ia-projet:latest -m py_compile app.py
 
   deploy:
     needs: build-and-test
