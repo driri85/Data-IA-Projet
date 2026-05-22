@@ -16,17 +16,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        shell: pwsh
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install -r requirements.txt
 
       - name: Validate application syntax
-        shell: pwsh
         run: python3 -m py_compile app.py
 
       - name: Build Docker image
-        shell: pwsh
         run: docker build -t data-ia-projet:latest .
 
   deploy:
@@ -39,15 +36,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        shell: pwsh
         run: docker build -t data-ia-projet:latest .
 
       - name: Stop previous container
-        shell: pwsh
         run: |
-          docker rm -f data-ia-projet 2>$null
+          docker rm -f data-ia-projet >/dev/null 2>&1 || true
 
       - name: Run application container
-        shell: pwsh
         run: |
           docker run -d --name data-ia-projet --restart unless-stopped -p 8501:8501 data-ia-projet:latest
