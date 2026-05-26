@@ -61,12 +61,12 @@ preprocessor = ColumnTransformer(
 from sklearn.ensemble import VotingRegressor
 from sklearn.linear_model import Ridge, Lasso, ElasticNet
 
-# D"efinition de trois modeles lineaires regularises
+# Definition de trois modeles lineaires regularises
 ridge = Ridge(alpha=10.0)
 lasso = Lasso(alpha=0.1)
 elastic = ElasticNet(alpha=0.1, l1_ratio=0.5)
 
-# Cr"eation du Voting Regressor
+# Creation du Voting Regressor
 voting_model = VotingRegressor(
     estimators=[
         ('ridge', ridge),
