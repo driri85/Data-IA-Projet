@@ -5,15 +5,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Chargement du dataset diabetes
-diabetes = load_diabetes()
-df = pd.DataFrame(diabetes.data, columns=diabetes.feature_names)
-df['target'] = diabetes.target
-
 st.write("""
 # My first app
 Hello *world!*
 """)
+
+# Chargement du dataset diabetes
+diabetes = load_diabetes()
+df = pd.DataFrame(diabetes.data, columns=diabetes.feature_names)
+df['target'] = diabetes.target
 
 st.write(df)
 
