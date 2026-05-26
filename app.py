@@ -4,6 +4,7 @@ from sklearn.datasets import load_diabetes
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import joblib
 
 st.write("""
 # My first app
@@ -60,7 +61,7 @@ preprocessor = ColumnTransformer(
 from sklearn.ensemble import VotingRegressor
 from sklearn.linear_model import Ridge, Lasso, ElasticNet
 
-# D"efinition de trois mod"eles lin"eaires r"egularis"es
+# D"efinition de trois modeles lineaires regularises
 ridge = Ridge(alpha=10.0)
 lasso = Lasso(alpha=0.1)
 elastic = ElasticNet(alpha=0.1, l1_ratio=0.5)
@@ -94,3 +95,4 @@ plt.xlabel("Valeurs Réelles (Progression Diabète)")
 plt.ylabel("Prédictions")
 plt.title(f"Performance du modèle - Diabetes (R²: {score_val:.4f})")
 st.pyplot(plt)
+joblib.dump(model_pipeline, "model.pkl")
