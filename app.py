@@ -6,10 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 
-st.write("""
-# My first app
-Hello *world!*
-""")
 
 # Chargement du dataset diabetes
 diabetes = load_diabetes()
